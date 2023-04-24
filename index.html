@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <link rel="stylesheet" href="css/style.css">
+  <title>Financiamento Imobiliário | Alisson Batalha</title>
+</head>
+<body>
+  <main>
+    <h1>Financiamento de imóveis</h1>
+    <div class="container">
+      <form action="">
+        <label for="valor-imovel">Valor do imóvel</label>
+        <input type="number" name="" id="valor-imovel" placeholder="R$" required>
+        
+        <label for="renda-mensal">Sua renda mensal</label>
+        <input type="number" name="" id="renda-mensal" placeholder="R$" required>
+        
+        <label for="duracao">Em quantos anos pretende financiar</label>
+        <input type="number" name="" id="duracao" required>
+        
+        <label for="entrada" class="label-entrada">Valor da entrada</label>
+        <input type="number" name="" id="entrada" placeholder="R$" required>
+        
+        <div class="sem-entrada">
+          <label for="sem-entrada">Financiar sem entrada</label>
+          <input type="checkbox" name="" id="sem-entrada">          
+        </div> <!-- sem-entrada -->
+
+        <button id="calcular">Calcular</button>
+
+        <section class="resultado">
+          <h2>Resumo do pedido:</h2>
+          <p id="resumo-valor"><span>Valor do imovel :</span></p>
+          <p id="resumo-renda"><span>Renda mensal :</span></p>
+          <p id="resumo-duracao"><span>Duração :</span></p>
+          <p id="resumo-entrada"><span>Valor da entrada :</span></p>
+          <p id="resumo-financiamento"><span>Parcelas :</span></p>
+          <p id="resumo-decisao"><p>
+        </section>
+
+      </form>
+
+
+    </div> <!-- container -->
+  </main>
+
+  <script src="js/script.js"></script>
+</body>
+</html>

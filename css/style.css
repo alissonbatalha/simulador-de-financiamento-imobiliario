@@ -1,0 +1,175 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background: url(../predio.jpg) no-repeat;
+  background-size: cover;
+  background-position: center;
+  
+  box-shadow: 201px 211px 420px 110px rgba(0, 0, 0, 0.62) inset;
+  -webkit-box-shadow: 201px 211px 420px 110px rgba(0, 0, 0, 0.62) inset;
+  -moz-box-shadow: 201px 211px 420px 110px rgba(0, 0, 0, 0.62) inset;
+}
+
+main {
+  height: 100vh;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+h1 {
+  color: #fff;
+
+  margin-top: 2rem;
+}
+
+form {
+  width: 500px;
+
+  background: #596ea8;
+
+  border-radius: 10px;
+
+  margin-top: 2rem;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: stretch;
+  align-items: flex-start;
+
+  padding: 1.5rem;
+}
+
+label {
+  font-size: 1.5rem;
+
+  color: #251e1e;
+
+  transition: all .3s ease-in-out;
+}
+
+input {
+  width: 60%;
+  height: 40px;
+
+  margin: 1rem 0;
+
+  border: none;
+  outline: none;
+  border-radius: 5px;
+
+  padding-left: 10px;
+
+  transition: all .3s ease-in-out;
+}
+
+.sem-entrada {
+  display: flex;
+  justify-content: space-between;
+}
+
+#sem-entrada {
+  width: 20px;
+  height: 20px;
+
+  margin:.2rem 0 0 .8rem;
+  padding: 0;
+}
+
+.hidden {
+  display: none;
+}
+
+#calcular {
+  width: 90%;
+  height: 50px;
+
+  margin: 1rem auto;
+
+  font-size: 1.3rem;
+  font-weight: bold;
+
+  background-color: paleturquoise;
+  color: #251e1e;
+
+  border: none;
+  outline: none;
+  border-radius: 8px;
+
+  transition: all .2s ease-in-out;
+}
+
+#calcular:hover {
+  background: #3aebeb;
+
+  transform: scale(105%);
+}
+
+.resultado {
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+
+  margin: auto;
+
+  background-color: beige;
+
+  width: 90%;
+
+  padding: 1rem;
+
+  border-radius: 8px;
+
+  transition: all .5s ease-in-out;
+
+  opacity: 0;
+}
+
+.resultado.ativo {
+  display: flex;
+  opacity: 1;
+}
+
+.resultado h2 {
+  font-size: 1.7rem;
+
+  border-bottom: 1px solid  #521ce9;
+}
+
+.resultado span {
+  font-size: 1.45rem;
+  font-weight: 550;
+ 
+  color: #521ce9;
+}
+
+.resultado p {
+  font-size: 1.45rem;
+  font-weight: bold;
+
+  color: #161616;
+}
+
+.resultado #resumo-decisao {
+  color: #f1e8e8;
+
+  padding: .5rem 1rem;
+
+  border-radius: 5px;
+}
+
+.resultado #resumo-decisao.reprovado {
+  background-color:  #c94949;
+}
+
+.resultado #resumo-decisao.aprovado {
+  background-color:  #0b6617;
+}
