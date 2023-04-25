@@ -63,8 +63,8 @@ btnCalcula.addEventListener('click', (event) => {
 
   resumoValor.innerHTML += ` R$ ${valorImovelValue + entradaValue},00`;
   resumoRenda.innerHTML += ` R$ ${rendaMensalValue},00`;
-  resumoDuracao.innerHTML += ` ${quantidadeParcelas} (${duracaoValue} anos)`;
+  resumoDuracao.innerHTML += ` ${quantidadeParcelas} meses (${duracaoValue} anos)`;
   resumoEntrada.innerHTML += ` R$ ${entradaValue},00`;
-  resumoFinanciamento.innerHTML += ` ${duracaoValue} parcelas de R$ ${parcelaComTaxa},00`;
+  resumoFinanciamento.innerHTML += ` ${quantidadeParcelas} parcelas de R$ ${parcelaComTaxa},00`;
  //resumoDecisao.innerHTML += ` `;
 });
