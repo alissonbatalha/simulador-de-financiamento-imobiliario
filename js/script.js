@@ -30,8 +30,6 @@ btnCalcula.addEventListener('click', (event) => {
 
     labelEntrada.classList.toggle('hidden');
     entrada.classList.toggle('hidden');
-    resumoEntrada.classList.toggle('hidden');
-    
   });
 
 
