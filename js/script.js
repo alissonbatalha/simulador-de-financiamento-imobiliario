@@ -1,5 +1,17 @@
 const btnCalcula = document.querySelector('#calcular');
 
+let labelEntrada = document.querySelector('.label-entrada');
+let semEntrada = document.querySelector('input#sem-entrada');
+let entrada = document.querySelector('input#entrada');
+
+
+semEntrada.addEventListener('click', (event) => {
+    event.preventDefault;
+
+    labelEntrada.classList.toggle('hidden');
+    entrada.classList.toggle('hidden');
+  });
+
 btnCalcula.addEventListener('click', (event) => {
   event.preventDefault();
 
@@ -12,10 +24,10 @@ btnCalcula.addEventListener('click', (event) => {
   const duracao = document.querySelector('input#duracao');
   const duracaoValue = Number(duracao.value);
 
-  const labelEntrada = document.querySelector('.label-entrada');
-  const entrada = document.querySelector('input#entrada');
+  let labelEntrada = document.querySelector('.label-entrada');
+  let entrada = document.querySelector('input#entrada');
   const entradaValue = Number(entrada.value);
-  const semEntrada = document.querySelector('input#sem-entrada');
+  let semEntrada = document.querySelector('input#sem-entrada');
 
   const resultado = document.querySelector(".resultado");
   const resumoValor = document.querySelector('#resumo-valor');
@@ -25,12 +37,7 @@ btnCalcula.addEventListener('click', (event) => {
   const resumoFinanciamento = document.querySelector('#resumo-financiamento');
   const resumoDecisao = document.querySelector('#resumo-decisao');
 
-  semEntrada.addEventListener('click', (event) => {
-    event.preventDefault;
-
-    labelEntrada.classList.toggle('hidden');
-    entrada.classList.toggle('hidden');
-  });
+  
 
 
   if (entradaValue > 0) {
