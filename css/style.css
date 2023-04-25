@@ -159,8 +159,6 @@ input {
 }
 
 .resultado #resumo-decisao {
-  color: #f1e8e8;
-
   padding: .5rem 1rem;
 
   border-radius: 5px;
@@ -168,8 +166,11 @@ input {
 
 .resultado #resumo-decisao.reprovado {
   background-color:  #c94949;
+  color: #f1e8e8;
 }
 
 .resultado #resumo-decisao.aprovado {
-  background-color:  #0b6617;
+  background-color:  #00bf00;
+  color: #080808;
+  
 }

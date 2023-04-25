@@ -58,7 +58,7 @@ btnCalcula.addEventListener('click', (event) => {
     resumoDecisao.classList.add('reprovado');
     resumoDecisao.innerHTML += 'REPROVADO';
   } else {
-    resumoDecisao.classList.add('provado');
+    resumoDecisao.classList.add('aprovado');
     resumoDecisao.innerHTML += 'APROVADO';
   }
 
