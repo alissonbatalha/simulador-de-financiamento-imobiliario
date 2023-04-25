@@ -70,6 +70,6 @@ btnCalcula.addEventListener('click', (event) => {
   resumoRenda.innerHTML += ` R$ ${rendaMensalValue},00`;
   resumoDuracao.innerHTML += ` ${quantidadeParcelas} meses (${duracaoValue} anos)`;
   resumoEntrada.innerHTML += ` R$ ${entradaValue},00`;
-  resumoFinanciamento.innerHTML += ` ${quantidadeParcelas} parcelas de R$ ${parcelaComTaxa},00`;
+  resumoFinanciamento.innerHTML += ` ${quantidadeParcelas} parcelas de R$ ${parcelaComTaxa.toFixed(2)},00`;
  //resumoDecisao.innerHTML += ` `;
 });
