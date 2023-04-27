@@ -10,19 +10,21 @@ semEntrada.addEventListener('click', (event) => {
 
     labelEntrada.classList.toggle('hidden');
     entrada.classList.toggle('hidden');
+    entrada.value = "";
   });
 
 btnCalcula.addEventListener('click', (event) => {
   event.preventDefault();
+  
 
   let valorImovel = document.querySelector('input#valor-imovel');
   let valorImovelValue = Number(valorImovel.value);
 
-  const rendaMensal = document.querySelector('input#renda-mensal');
-  const rendaMensalValue = Number(rendaMensal.value);
+  let rendaMensal = document.querySelector('input#renda-mensal');
+  let rendaMensalValue = Number(rendaMensal.value);
 
-  const duracao = document.querySelector('input#duracao');
-  const duracaoValue = Number(duracao.value);
+  let duracao = document.querySelector('input#duracao');
+  let duracaoValue = Number(duracao.value);
 
   let labelEntrada = document.querySelector('.label-entrada');
   let entrada = document.querySelector('input#entrada');
@@ -36,8 +38,7 @@ btnCalcula.addEventListener('click', (event) => {
   const resumoEntrada = document.querySelector('#resumo-entrada');
   const resumoFinanciamento = document.querySelector('#resumo-financiamento');
   const resumoDecisao = document.querySelector('#resumo-decisao');
-
-  
+  const resumoBtn = document.querySelector('#resumo-btn');
 
 
   if (entradaValue > 0) {
@@ -55,21 +56,37 @@ btnCalcula.addEventListener('click', (event) => {
   let parcelaComTaxa = valorParcelas + jurosMensais;
 
   if (parcelaComTaxa >= tercoDoSalario) {
-    resumoDecisao.classList.add('reprovado');
-    resumoDecisao.innerHTML += 'REPROVADO';
+    resumoDecisao.style.backgroundColor = '#c94949';
+    resumoDecisao.style.color = '#f1e8e8';
+    resumoDecisao.innerText = 'REPROVADO';
   } else {
-    resumoDecisao.classList.add('aprovado');
-    resumoDecisao.innerHTML += 'APROVADO';
+    resumoDecisao.style.backgroundColor = '#00bf00';
+    resumoDecisao.style.color = '#080808';
+    resumoDecisao.innerText = 'APROVADO';
   }
-
+	
+	
   resultado.classList.add('ativo');
 
   console.table(`${valorImovel.value}, ${quantidadeParcelas}, ${valorParcelas} ,${parcelaComTaxa}, ${tercoDoSalario}, ${parcelaComTaxa * duracaoValue}`);
 
-  resumoValor.innerHTML += ` R$ ${valorImovelValue + entradaValue},00`;
-  resumoRenda.innerHTML += ` R$ ${rendaMensalValue},00`;
-  resumoDuracao.innerHTML += ` ${quantidadeParcelas} meses (${duracaoValue} anos)`;
-  resumoEntrada.innerHTML += ` R$ ${entradaValue},00`;
-  resumoFinanciamento.innerHTML += ` ${quantidadeParcelas} parcelas de R$ ${parcelaComTaxa.toFixed(2).replace('.', ',')}`;
+  resumoValor.innerHTML = ` R$ ${valorImovelValue + entradaValue},00`;
+  resumoRenda.innerHTML = ` R$ ${rendaMensalValue},00`;
+  resumoDuracao.innerHTML = ` ${quantidadeParcelas} meses (${duracaoValue} anos)`;
+  resumoEntrada.innerHTML = ` R$ ${entradaValue},00`;
+  resumoFinanciamento.innerHTML = ` ${quantidadeParcelas} parcelas de R$ ${parcelaComTaxa.toFixed(2).replace('.', ',')}`;
  //resumoDecisao.innerHTML += ` `;
+ 
+	resumoBtn.addEventListener('click', (event) => {
+		event.preventDefault(); 
+		
+		resultado.classList.remove('ativo');
+		valorImovel.value= "";
+		rendaMensal.value= "";
+		entrada.value = "";
+		duracao.value = "";
+		entrada.value = "";
+		
+	});
+	
 });
