@@ -4,7 +4,6 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
   <link rel="stylesheet" href="css/style.css">
   <title>Financiamento Imobiliário | Alisson Batalha</title>
 </head>
@@ -12,50 +11,58 @@
   <main>
     <h1>Financiamento de imóveis</h1>
     <div class="container">
-      <form action="">
+      <form id="form-financiamento" novalidate>
+
         <label for="valor-imovel">Valor do imóvel</label>
-        <input type="number" name="" id="valor-imovel" placeholder="R$" required>
-        
+        <input type="number" id="valor-imovel" placeholder="R$" min="1" step="0.01" required>
+        <span class="erro" id="erro-valor-imovel"></span>
+
         <label for="renda-mensal">Sua renda mensal</label>
-        <input type="number" name="" id="renda-mensal" placeholder="R$" required>
-        
+        <input type="number" id="renda-mensal" placeholder="R$" min="1" step="0.01" required>
+        <span class="erro" id="erro-renda-mensal"></span>
+
         <label for="duracao">Em quantos anos pretende financiar</label>
-        <input type="number" name="" id="duracao" required>
-        
+        <input type="number" id="duracao" min="1" max="35" required>
+        <span class="erro" id="erro-duracao"></span>
+
+        <label for="taxa-juros">Taxa de juros anual (%)</label>
+        <input type="number" id="taxa-juros" min="0.1" max="30" step="0.1" value="10" required>
+        <span class="erro" id="erro-taxa-juros"></span>
+
+        <label for="sistema">Sistema de amortização</label>
+        <select id="sistema">
+          <option value="price">Tabela Price (parcelas fixas)</option>
+          <option value="sac">SAC (parcelas decrescentes)</option>
+        </select>
+
         <label for="entrada" class="label-entrada">Valor da entrada</label>
-        <input type="number" name="" id="entrada" placeholder="R$" required>
-        
+        <input type="number" id="entrada" placeholder="R$" min="0" step="0.01">
+        <span class="erro" id="erro-entrada"></span>
+
         <div class="sem-entrada">
           <label for="sem-entrada">Financiar sem entrada</label>
-          <input type="checkbox" name="" id="sem-entrada">          
-        </div> <!-- sem-entrada -->
+          <input type="checkbox" id="sem-entrada">
+        </div>
 
-        <button id="calcular">Calcular</button>
+        <button type="submit" id="calcular">Calcular</button>
 
-        <section class="resultado">
+        <section class="resultado" id="resultado" aria-live="polite">
           <h2>Resumo do pedido:</h2>
-          <div>
-	          <span>Valor do imóvel :</span><p id="resumo-valor"></p>
-          </div>
-          <div>
-	          <span>Renda mensal :</span><p id="resumo-renda"></p>
-          </div>
-          <div>
-	          <span>Duração :</span><p id="resumo-duracao"></p>
-          </div>
-          <div>
-	          <span>Valor da entrada :</span><p id="resumo-entrada"></p>
-          </div>
-          <div>
-	          <span>Parcelas :</span><p id="resumo-financiamento"></p>
-          </div>
-          <p id="resumo-decisao"><p>
-          <a id="resumo-btn" href="#">Nova simulação</a>
+          <div><span>Valor do imóvel:</span><p id="resumo-valor"></p></div>
+          <div><span>Renda mensal:</span><p id="resumo-renda"></p></div>
+          <div><span>Duração:</span><p id="resumo-duracao"></p></div>
+          <div><span>Valor da entrada:</span><p id="resumo-entrada"></p></div>
+          <div><span>Valor financiado:</span><p id="resumo-financiado"></p></div>
+          <div><span>Sistema:</span><p id="resumo-sistema"></p></div>
+          <div><span>1ª parcela:</span><p id="resumo-primeira-parcela"></p></div>
+          <div><span>Última parcela:</span><p id="resumo-ultima-parcela"></p></div>
+          <div><span>Total pago:</span><p id="resumo-total"></p></div>
+          <p id="resumo-decisao"></p>
+          <button type="button" id="resumo-btn">Nova simulação</button>
         </section>
 
       </form>
-
-    </div> <!-- container -->
+    </div>
   </main>
 
   <script src="js/script.js"></script>

@@ -1,99 +1,188 @@
-alert('REGRA DA APROVAÇÃO: Parcelas mensal(já com taxa simbolica) não pode ultrapassar 30% da renda mensal!!');
+// Elementos do formulário
+const form = document.getElementById('form-financiamento');
+const inputValorImovel = document.getElementById('valor-imovel');
+const inputRendaMensal = document.getElementById('renda-mensal');
+const inputDuracao = document.getElementById('duracao');
+const inputTaxaJuros = document.getElementById('taxa-juros');
+const inputEntrada = document.getElementById('entrada');
+const inputSemEntrada = document.getElementById('sem-entrada');
+const selectSistema = document.getElementById('sistema');
+const labelEntrada = document.querySelector('.label-entrada');
 
-const btnCalcula = document.querySelector('#calcular');
+// Elementos do resultado
+const resultado = document.getElementById('resultado');
+const resumoValor = document.getElementById('resumo-valor');
+const resumoRenda = document.getElementById('resumo-renda');
+const resumoDuracao = document.getElementById('resumo-duracao');
+const resumoEntrada = document.getElementById('resumo-entrada');
+const resumoFinanciado = document.getElementById('resumo-financiado');
+const resumoSistema = document.getElementById('resumo-sistema');
+const resumoPrimeiraParcela = document.getElementById('resumo-primeira-parcela');
+const resumoUltimaParcela = document.getElementById('resumo-ultima-parcela');
+const resumoTotal = document.getElementById('resumo-total');
+const resumoDecisao = document.getElementById('resumo-decisao');
+const resumoBtn = document.getElementById('resumo-btn');
 
-let labelEntrada = document.querySelector('.label-entrada');
-let semEntrada = document.querySelector('input#sem-entrada');
-let entrada = document.querySelector('input#entrada');
+// Formatar valor em Real brasileiro
+function formatarMoeda(valor) {
+  return valor.toLocaleString('pt-br', { style: 'currency', currency: 'BRL' });
+}
 
+// Limpar mensagens de erro
+function limparErros() {
+  document.querySelectorAll('.erro').forEach(el => el.textContent = '');
+}
 
-semEntrada.addEventListener('click', (event) => {
-    event.preventDefault;
+// Mostrar erro em campo específico
+function mostrarErro(campoId, mensagem) {
+  const erroEl = document.getElementById(`erro-${campoId}`);
+  if (erroEl) erroEl.textContent = mensagem;
+}
 
-    labelEntrada.classList.toggle('hidden');
-    entrada.classList.toggle('hidden');
-    entrada.value = "";
-  });
+// Validar todos os campos do formulário
+function validarFormulario(dados) {
+  limparErros();
+  let valido = true;
 
-btnCalcula.addEventListener('click', (event) => {
+  if (!dados.valorImovel || dados.valorImovel <= 0) {
+    mostrarErro('valor-imovel', 'Informe um valor válido para o imóvel');
+    valido = false;
+  }
+
+  if (!dados.rendaMensal || dados.rendaMensal <= 0) {
+    mostrarErro('renda-mensal', 'Informe uma renda mensal válida');
+    valido = false;
+  }
+
+  if (!dados.duracao || dados.duracao <= 0 || dados.duracao > 35) {
+    mostrarErro('duracao', 'Duração deve ser entre 1 e 35 anos');
+    valido = false;
+  }
+
+  if (!dados.taxaJuros || dados.taxaJuros <= 0 || dados.taxaJuros > 30) {
+    mostrarErro('taxa-juros', 'Taxa de juros deve ser entre 0.1% e 30%');
+    valido = false;
+  }
+
+  if (dados.entrada < 0) {
+    mostrarErro('entrada', 'Valor da entrada não pode ser negativo');
+    valido = false;
+  }
+
+  if (dados.entrada >= dados.valorImovel) {
+    mostrarErro('entrada', 'Entrada não pode ser maior ou igual ao valor do imóvel');
+    valido = false;
+  }
+
+  return valido;
+}
+
+// Calcular Tabela Price (parcelas fixas)
+function calcularPrice(valorFinanciado, taxaMensal, numParcelas) {
+  const parcelaFixa = valorFinanciado * 
+    (taxaMensal * Math.pow(1 + taxaMensal, numParcelas)) / 
+    (Math.pow(1 + taxaMensal, numParcelas) - 1);
+
+  return {
+    primeiraParcela: parcelaFixa,
+    ultimaParcela: parcelaFixa,
+    totalPago: parcelaFixa * numParcelas,
+  };
+}
+
+// Calcular SAC (amortização constante, parcelas decrescentes)
+function calcularSAC(valorFinanciado, taxaMensal, numParcelas) {
+  const amortizacaoConstante = valorFinanciado / numParcelas;
+  
+  const primeiraParcela = amortizacaoConstante + (valorFinanciado * taxaMensal);
+  
+  const saldoDevedorFinal = valorFinanciado - (amortizacaoConstante * (numParcelas - 1));
+  const ultimaParcela = amortizacaoConstante + (saldoDevedorFinal * taxaMensal);
+
+  // Soma todas as parcelas pra saber o total pago
+  let totalPago = 0;
+  let saldoDevedor = valorFinanciado;
+  
+  for (let i = 0; i < numParcelas; i++) {
+    const juros = saldoDevedor * taxaMensal;
+    const parcela = amortizacaoConstante + juros;
+    totalPago += parcela;
+    saldoDevedor -= amortizacaoConstante;
+  }
+
+  return { primeiraParcela, ultimaParcela, totalPago };
+}
+
+// Coletar dados do formulário
+function coletarDados() {
+  const semEntrada = inputSemEntrada.checked;
+
+  return {
+    valorImovel: Number(inputValorImovel.value),
+    rendaMensal: Number(inputRendaMensal.value),
+    duracao: Number(inputDuracao.value),
+    taxaJuros: Number(inputTaxaJuros.value),
+    entrada: semEntrada ? 0 : Number(inputEntrada.value || 0),
+    sistema: selectSistema.value,
+  };
+}
+
+// Processar e exibir resultado
+function processarSimulacao(event) {
   event.preventDefault();
-  
 
-  let valorImovel = document.querySelector('input#valor-imovel');
-  let valorImovelValue = Number(valorImovel.value);
-  const valorImovelValueReal = valorImovelValue.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'});
+  const dados = coletarDados();
 
-  let rendaMensal = document.querySelector('input#renda-mensal');
-  let rendaMensalValue = Number(rendaMensal.value);
-  const rendaMensalValueReal = rendaMensalValue.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'});
+  if (!validarFormulario(dados)) return;
 
-  let duracao = document.querySelector('input#duracao');
-  let duracaoValue = Number(duracao.value);
+  const valorFinanciado = dados.valorImovel - dados.entrada;
+  const numParcelas = dados.duracao * 12;
+  const taxaMensal = Math.pow(1 + dados.taxaJuros / 100, 1 / 12) - 1;
 
-  let labelEntrada = document.querySelector('.label-entrada');
-  let entrada = document.querySelector('input#entrada');
-  const entradaValue = Number(entrada.value);
-  const entradaValueReal = entradaValue.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'});
-  let semEntrada = document.querySelector('input#sem-entrada');
+  const resultadoCalculo = dados.sistema === 'price'
+    ? calcularPrice(valorFinanciado, taxaMensal, numParcelas)
+    : calcularSAC(valorFinanciado, taxaMensal, numParcelas);
 
-  const resultado = document.querySelector(".resultado");
-  const resumoValor = document.querySelector('#resumo-valor');
-  const resumoRenda = document.querySelector('#resumo-renda');
-  const resumoDuracao = document.querySelector('#resumo-duracao');
-  const resumoEntrada = document.querySelector('#resumo-entrada');
-  const resumoFinanciamento = document.querySelector('#resumo-financiamento');
-  const resumoDecisao = document.querySelector('#resumo-decisao');
-  const resumoBtn = document.querySelector('#resumo-btn');
+  // Regra de aprovação: parcela não pode passar de 30% da renda
+  const limiteRenda = dados.rendaMensal * 0.3;
+  const aprovado = resultadoCalculo.primeiraParcela <= limiteRenda;
 
+  exibirResultado(dados, valorFinanciado, numParcelas, resultadoCalculo, aprovado);
+}
 
-  if (entradaValue > 0) {
-    valorImovelValue -= entradaValue;
-  }
+// Atualizar DOM com o resultado
+function exibirResultado(dados, valorFinanciado, numParcelas, calculo, aprovado) {
+  resumoValor.textContent = formatarMoeda(dados.valorImovel);
+  resumoRenda.textContent = formatarMoeda(dados.rendaMensal);
+  resumoDuracao.textContent = `${numParcelas} meses (${dados.duracao} anos)`;
+  resumoEntrada.textContent = formatarMoeda(dados.entrada);
+  resumoFinanciado.textContent = formatarMoeda(valorFinanciado);
+  resumoSistema.textContent = dados.sistema === 'price' ? 'Tabela Price' : 'SAC';
+  resumoPrimeiraParcela.textContent = formatarMoeda(calculo.primeiraParcela);
+  resumoUltimaParcela.textContent = formatarMoeda(calculo.ultimaParcela);
+  resumoTotal.textContent = formatarMoeda(calculo.totalPago);
 
-  let tercoDoSalario = (rendaMensalValue / 100) * 30;
+  resumoDecisao.textContent = aprovado ? 'APROVADO' : 'REPROVADO';
+  resumoDecisao.className = aprovado ? 'aprovado' : 'reprovado';
 
-  const quantidadeParcelas = duracaoValue * 12;
-
-  let valorParcelas = valorImovelValue / quantidadeParcelas;
-
-  let jurosMensais = (valorParcelas / 100) * 50;
-
-  let parcelaComTaxa = valorParcelas + jurosMensais;
-  
-  const parcelaComTaxaReal = parcelaComTaxa.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'});
-
-  if (parcelaComTaxa >= tercoDoSalario) {
-    resumoDecisao.style.backgroundColor = '#c94949';
-    resumoDecisao.style.color = '#f1e8e8';
-    resumoDecisao.innerText = 'REPROVADO';
-  } else {
-    resumoDecisao.style.backgroundColor = '#00bf00';
-    resumoDecisao.style.color = '#080808';
-    resumoDecisao.innerText = 'APROVADO';
-  }
-	
-	
   resultado.classList.add('ativo');
+}
 
-  console.table(`${valorImovel.value}, ${quantidadeParcelas}, ${valorParcelas} ,${parcelaComTaxa}, ${tercoDoSalario}, ${parcelaComTaxa * duracaoValue}`);
+// Resetar formulário para nova simulação
+function resetarFormulario() {
+  form.reset();
+  resultado.classList.remove('ativo');
+  limparErros();
+  labelEntrada.classList.remove('hidden');
+  inputEntrada.classList.remove('hidden');
+}
 
-  resumoValor.innerHTML = `  ${valorImovelValueReal}`;
-  resumoRenda.innerHTML = `  ${rendaMensalValueReal}`;
-  resumoDuracao.innerHTML = ` ${quantidadeParcelas} meses (${duracaoValue} anos)`;
-  resumoEntrada.innerHTML = `  ${entradaValueReal}`;
-  resumoFinanciamento.innerHTML = ` ${quantidadeParcelas} parcelas de ${parcelaComTaxaReal}`;
- //resumoDecisao.innerHTML += ` `;
- 
-	resumoBtn.addEventListener('click', (event) => {
-		event.preventDefault(); 
-		
-		resultado.classList.remove('ativo');
-		valorImovel.value= "";
-		rendaMensal.value= "";
-		entrada.value = "";
-		duracao.value = "";
-		entrada.value = "";
-		
-	});
-	
+// Toggle campo de entrada
+inputSemEntrada.addEventListener('change', () => {
+  labelEntrada.classList.toggle('hidden');
+  inputEntrada.classList.toggle('hidden');
+  inputEntrada.value = '';
 });
+
+form.addEventListener('submit', processarSimulacao);
+resumoBtn.addEventListener('click', resetarFormulario);
